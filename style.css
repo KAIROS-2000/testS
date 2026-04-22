@@ -1,5 +1,13 @@
 :root {
   color-scheme: dark;
+  --brass-light: #d7a55f;
+  --brass: #b8863b;
+  --bronze: #8a5c2b;
+  --copper: #a54f2d;
+  --iron: #2f2a27;
+  --iron-soft: #3f3834;
+  --coal: #151210;
+  --parchment: #f4dfb3;
 }
 
 * {
@@ -11,22 +19,59 @@ body {
   min-height: 100vh;
   display: grid;
   place-items: center;
-  font-family: Arial, Helvetica, sans-serif;
-  background: radial-gradient(circle at top, #1e293b, #020617 60%);
-  color: #e2e8f0;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  color: var(--parchment);
+  background:
+    radial-gradient(circle at 20% 10%, rgba(184, 134, 59, 0.22), transparent 35%),
+    radial-gradient(circle at 80% 85%, rgba(165, 79, 45, 0.22), transparent 30%),
+    linear-gradient(145deg, #090807, #17120f 42%, #0b0908);
 }
 
 .game-page {
-  width: min(92vw, 520px);
-  padding: 1.25rem;
-  border-radius: 16px;
-  background: rgba(15, 23, 42, 0.85);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
+  position: relative;
+  overflow: hidden;
+  width: min(92vw, 540px);
+  padding: 1.4rem;
+  border-radius: 18px;
+  border: 2px solid var(--bronze);
+  background:
+    linear-gradient(160deg, rgba(56, 45, 36, 0.94), rgba(24, 19, 16, 0.96)),
+    repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.03) 0 4px,
+      rgba(0, 0, 0, 0.03) 4px 8px
+    );
+  box-shadow:
+    inset 0 0 0 1px rgba(215, 165, 95, 0.32),
+    0 14px 36px rgba(0, 0, 0, 0.55);
+}
+
+.game-page::before,
+.game-page::after {
+  content: "⚙";
+  position: absolute;
+  color: rgba(215, 165, 95, 0.22);
+  font-size: 2.3rem;
+  pointer-events: none;
+}
+
+.game-page::before {
+  top: 6px;
+  left: 12px;
+}
+
+.game-page::after {
+  right: 12px;
+  bottom: 8px;
 }
 
 h1 {
   margin: 0 0 1rem;
   text-align: center;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brass-light);
+  text-shadow: 0 1px 0 #3f2d1d, 0 0 18px rgba(184, 134, 59, 0.3);
 }
 
 .hud {
@@ -38,26 +83,35 @@ h1 {
 }
 
 .score-card {
-  padding: 0.6rem 0.75rem;
+  padding: 0.62rem 0.78rem;
   border-radius: 10px;
-  background: #0f172a;
-  border: 1px solid #334155;
+  border: 1px solid #7e5424;
+  background: linear-gradient(180deg, #4a392b, #2b211a);
+  color: #ffdba4;
   display: flex;
   justify-content: space-between;
+  box-shadow: inset 0 0 0 1px rgba(215, 165, 95, 0.2);
 }
 
 #restart-btn {
-  border: 1px solid #22c55e;
-  color: #dcfce7;
-  background: #15803d;
-  padding: 0.6rem 0.85rem;
+  border: 1px solid #8f5924;
+  background: linear-gradient(180deg, #a85a2e, #7b3f22);
+  color: #ffebc7;
+  padding: 0.6rem 0.9rem;
   border-radius: 10px;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: 0.02em;
   cursor: pointer;
+  transition: transform 0.12s ease, filter 0.12s ease;
+  box-shadow: inset 0 0 0 1px rgba(255, 209, 145, 0.28);
 }
 
 #restart-btn:hover {
-  background: #166534;
+  filter: brightness(1.1);
+}
+
+#restart-btn:active {
+  transform: translateY(1px);
 }
 
 .game-area {
@@ -69,31 +123,37 @@ h1 {
 #game-canvas {
   width: min(90vw, 400px);
   height: min(90vw, 400px);
-  background: #020617;
-  border: 2px solid #334155;
   border-radius: 12px;
+  border: 2px solid var(--brass);
+  background: linear-gradient(180deg, #241d19, #12100e);
+  box-shadow:
+    inset 0 0 0 1px rgba(244, 223, 179, 0.14),
+    inset 0 0 28px rgba(0, 0, 0, 0.55);
 }
 
 .status {
   margin: 0;
   min-height: 1.2rem;
-  color: #94a3b8;
   text-align: center;
+  color: #e7c78a;
 }
 
 .controls-help {
   margin-top: 1rem;
   text-align: center;
+  color: #e8c98d;
 }
 
 .controls-help h2 {
-  margin: 0 0 0.4rem;
+  margin: 0 0 0.35rem;
   font-size: 1rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .controls-help p {
   margin: 0;
-  color: #cbd5e1;
+  color: #f3d9aa;
 }
 
 @media (max-width: 520px) {
