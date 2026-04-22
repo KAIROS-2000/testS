@@ -4,11 +4,40 @@ const scoreEl = document.getElementById("score");
 const bestScoreEl = document.getElementById("best-score");
 const statusEl = document.getElementById("status");
 const restartBtn = document.getElementById("restart-btn");
+const themeToggleBtn = document.getElementById("theme-toggle-btn");
+const pageTitleEl = document.getElementById("page-title");
 
 const gridSize = 20;
 const tileCount = canvas.width / gridSize;
 const speedMs = 120;
 const bestScoreKey = "snake_best_score";
+const themeKey = "snake_theme";
+const defaultTheme = "steampunk";
+
+const themes = {
+  steampunk: {
+    pageTitle: "Стимпанк Змейка",
+    toggleLabel: "Тема: Киберпанк",
+    board: "#1a1411",
+    grid: "rgba(215, 165, 95, 0.08)",
+    foodFill: "#c9673a",
+    foodStroke: "#f2c28a",
+    snakeHead: "#d7a55f",
+    snakeBody: "#b8863b",
+    snakeStroke: "#5b3c1e",
+  },
+  cyberpunk: {
+    pageTitle: "Киберпанк Змейка",
+    toggleLabel: "Тема: Стимпанк",
+    board: "#0d1230",
+    grid: "rgba(117, 239, 255, 0.12)",
+    foodFill: "#ff3fc7",
+    foodStroke: "#ffd2f5",
+    snakeHead: "#78f2ff",
+    snakeBody: "#2ed8ff",
+    snakeStroke: "#0c3f6f",
+  },
+};
 
 let snake = [];
 let direction = { x: 1, y: 0 };
@@ -19,8 +48,29 @@ let bestScore = Number(localStorage.getItem(bestScoreKey)) || 0;
 let gameStarted = false;
 let gameOver = false;
 let gameTimer;
+let currentTheme = localStorage.getItem(themeKey) || defaultTheme;
 
 bestScoreEl.textContent = String(bestScore);
+
+function applyTheme(themeName) {
+  currentTheme = themes[themeName] ? themeName : defaultTheme;
+  const theme = themes[currentTheme];
+
+  document.documentElement.dataset.theme = currentTheme === "cyberpunk" ? "cyberpunk" : "";
+  document.title = theme.pageTitle;
+  pageTitleEl.textContent = theme.pageTitle;
+  themeToggleBtn.textContent = theme.toggleLabel;
+  themeToggleBtn.setAttribute("aria-pressed", String(currentTheme === "cyberpunk"));
+
+  localStorage.setItem(themeKey, currentTheme);
+
+  draw();
+}
+
+function toggleTheme() {
+  const nextTheme = currentTheme === "steampunk" ? "cyberpunk" : "steampunk";
+  applyTheme(nextTheme);
+}
 
 function randomCell() {
   return Math.floor(Math.random() * tileCount);
@@ -50,10 +100,11 @@ function resetGame() {
 }
 
 function drawBoard() {
-  ctx.fillStyle = "#1a1411";
+  const theme = themes[currentTheme];
+  ctx.fillStyle = theme.board;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  ctx.strokeStyle = "rgba(215, 165, 95, 0.08)";
+  ctx.strokeStyle = theme.grid;
   ctx.lineWidth = 1;
   for (let i = 0; i <= tileCount; i += 1) {
     const p = i * gridSize;
@@ -69,22 +120,24 @@ function drawBoard() {
 }
 
 function drawFood() {
+  const theme = themes[currentTheme];
   const x = food.x * gridSize;
   const y = food.y * gridSize;
-  ctx.fillStyle = "#c9673a";
+  ctx.fillStyle = theme.foodFill;
   ctx.fillRect(x, y, gridSize, gridSize);
-  ctx.strokeStyle = "#f2c28a";
+  ctx.strokeStyle = theme.foodStroke;
   ctx.lineWidth = 2;
   ctx.strokeRect(x + 1, y + 1, gridSize - 2, gridSize - 2);
 }
 
 function drawSnake() {
+  const theme = themes[currentTheme];
   snake.forEach((part, index) => {
     const x = part.x * gridSize;
     const y = part.y * gridSize;
-    ctx.fillStyle = index === 0 ? "#d7a55f" : "#b8863b";
+    ctx.fillStyle = index === 0 ? theme.snakeHead : theme.snakeBody;
     ctx.fillRect(x, y, gridSize, gridSize);
-    ctx.strokeStyle = "#5b3c1e";
+    ctx.strokeStyle = theme.snakeStroke;
     ctx.lineWidth = 2;
     ctx.strokeRect(x + 1, y + 1, gridSize - 2, gridSize - 2);
   });
@@ -186,6 +239,8 @@ function handleKeydown(event) {
 
 document.addEventListener("keydown", handleKeydown);
 restartBtn.addEventListener("click", resetGame);
+themeToggleBtn.addEventListener("click", toggleTheme);
 
 resetGame();
+applyTheme(currentTheme);
 gameTimer = setInterval(tick, speedMs);
