@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Змейка</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="game-page">
+      <h1>Змейка</h1>
+
+      <section class="hud">
+        <div class="score-card">
+          <span>Счёт:</span>
+          <strong id="score">0</strong>
+        </div>
+        <div class="score-card">
+          <span>Рекорд:</span>
+          <strong id="best-score">0</strong>
+        </div>
+        <button id="restart-btn" type="button">Новая игра</button>
+      </section>
+
+      <section class="game-area">
+        <canvas
+          id="game-canvas"
+          width="400"
+          height="400"
+          aria-label="Игровое поле змейки"
+        ></canvas>
+        <p id="status" class="status">Нажми любую стрелку или WASD, чтобы начать.</p>
+      </section>
+
+      <section class="controls-help">
+        <h2>Управление</h2>
+        <p>Стрелки или клавиши W A S D</p>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
